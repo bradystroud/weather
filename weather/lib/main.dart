@@ -87,6 +87,7 @@ String syncify() {
   hi().then((data) {
     return data;
   });
+  // return("hello");
 }
 
 Future<String> hi() async {
