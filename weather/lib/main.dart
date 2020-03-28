@@ -1,6 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:xml/xml.dart';
 
 import 'get the data/readWrite.dart';
 
@@ -54,13 +54,13 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              'You have pushed the  this many times:',
             ),
             Text(
-              '$_counter',
+              '_counter',
               style: Theme.of(context).textTheme.display1,
             ),
-            Text("todays summary: "+ fixDumb())
+            Text("todays summary: " + syncify())
           ],
         ),
       ),
@@ -73,14 +73,26 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+// String getTheDataFromJsonFile() {
+//   // readData().then((summary) {
+//   //   return summary;
+//   // });
 
-Future<String> getTheDataFromJsonFile() async {
-  String summary = await readData();
-  return summary;
-}
+//   hello().then((summary) {
+//     return summary;
+//   });
+// }
 
-String fixDumb() {
-  getTheDataFromJsonFile().then((summary) {
-    return(summary);
+String syncify() {
+  hi().then((data) {
+    return data;
   });
 }
+
+Future<String> hi() async {
+  String contents = "Hello";
+  writeData(contents);
+  print("data:   " +readData());
+  return readData();
+}
+

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
-import 'dart:io';
 
 import '../get the data/readWrite.dart';
 
@@ -14,8 +13,6 @@ Future getSummary(location) async {
 
   // Use html parser
   var document = parse(response.body);
-  int i = 0;
-
   List<Element> summary = document.querySelectorAll('div.forecast > p');
   List<Map<String, dynamic>> linkMap = [];
 
