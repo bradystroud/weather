@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'get the data/readWrite.dart';
+import 'globals.dart' as globals;
 
 void main() => runApp(MyApp());
 
@@ -24,76 +23,69 @@ class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
+  var now = new DateTime.now();
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Hello"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the  this many times:',
+            Card(
+              child: Row(children: <Widget>[]),
             ),
-            Text(
-              '_counter',
-              style: Theme.of(context).textTheme.display1,
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text("todays summary: ${globals.summary}",
+                  textAlign: TextAlign.center),
             ),
-            Text("todays summary: " + syncify())
+            FlatButton(
+              padding: EdgeInsets.only(top: 80),
+              onPressed: () {
+                setState(() {
+                  _syncify("ipswich");
+                });
+              },
+              child: Text("Ipswich"),
+            ),
+            Text('27' + '\u00B0'),
+            FlatButton(
+              padding: EdgeInsets.all(20),
+              child: Text("Cairns"),
+              onPressed: () {
+                setState(() {
+                  _syncify("cairns");
+                });
+              },
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
 
-// String getTheDataFromJsonFile() {
-//   // readData().then((summary) {
-//   //   return summary;
-//   // });
-
-//   hello().then((summary) {
-//     return summary;
-//   });
-// }
-
-String syncify() {
-  hi().then((data) {
-    return data;
+_syncify(location) {
+  hi(location).then((data) {
+    globals.summary = data;
+    print("Globals.sum");
+    print(globals.summary);
   });
-  // return("hello");
+  if (globals.summary == null) {
+    globals.summary = "No data found";
+  }
 }
 
-Future<String> hi() async {
-  String contents = "Hello";
-  writeData(contents);
-  print("data:   " +readData());
-  return readData();
+Future<String> hi(location) async {
+  writeData(location);
+  return await readData();
 }
-
