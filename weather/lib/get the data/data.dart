@@ -12,9 +12,20 @@ Future getSummary(location) async {
   // Use html parser
   var document = parse(response.body);
   List<Element> summary = document.querySelectorAll('div.forecast > p');
+  List<Element> ddElement = document.querySelectorAll('dl > dd');
+
+  String rainChanceFixed = ddElement[3].text;
+  rainChanceFixed = rainChanceFixed.substring(
+      0, rainChanceFixed.length - 6); //Removes chars from image
+
   List<Map<String, dynamic>> linkMap = [];
 
-  linkMap.add({'summary': summary[0].text,});
+  linkMap.add({
+    'summary': summary[0].text,
+    'max': ddElement[1].text,
+    'rainSummary': ddElement[2].text,
+    'rainChance': rainChanceFixed,
+  });
 
   // print(json.encode(linkMap));
   // writeData(json.encode(linkMap));

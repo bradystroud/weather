@@ -1,3 +1,3 @@
 library my_prj.globals;
 
-String summary = "No data";
+List summary = [null, null, null, null, null];

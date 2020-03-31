@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'data.dart';
 
 import '../globals.dart' as globals;
+
 main() async {
   var file = File('weatherdata.txt');
   var contents = "many things";
@@ -26,7 +27,8 @@ writeData(location) async {
 
 writeFile(contents) async {
   Directory appDocDir = await getApplicationDocumentsDirectory();
-  var file = await File('${appDocDir.path}/test.txt').writeAsString(contents);
+  print("THis is the data im writing to file" + contents);
+  var file = await File('${appDocDir.path}/data.json').writeAsString(contents);
   print("FILE EXISTS: ");
   print(await file.exists());
   print("FILE LENGTH: ");
@@ -36,15 +38,19 @@ writeFile(contents) async {
 readData() async {
   Directory appDocDir = await getApplicationDocumentsDirectory();
   print("I CAN READ");
-  var file = File('${appDocDir.path}/test.txt');
+  var file = File('${appDocDir.path}/data.json');
   print("file found");
   var contents = await file.readAsString();
   Map<String, dynamic> content = jsonDecode(contents);
-  print(content);
-  print('TODAYS SUMMARY:  ${content['summary']}');
-  globals.summary = content['summary'];
-  print("I HAVE SET GLOBALS.SUMMARY ");
-  return '${content['summary']}';
+  globals.summary = [
+    content['max'],
+    content['summary'],
+    content['rainChance'],
+    content['rainSummary'],
+  ];
+  print("I HAVE SET GLOBALS ");
+  print(globals.summary.toString());
+  // return '${content['summary']}';
   // print(contents);
   // return contents;
 }

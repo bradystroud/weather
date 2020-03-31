@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'get the data/readWrite.dart';
+import 'Widgets/headerCard.dart';
 import 'globals.dart' as globals;
 
 void main() => runApp(MyApp());
@@ -23,33 +25,45 @@ class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
-  var now = new DateTime.now();
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String formattedDate = DateFormat('MMMMEEEEd').format(DateTime.now());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Hello"),
+        title: Text("Hello " + formattedDate),
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Card(
-              child: Row(children: <Widget>[]),
+            Container(
+              child: HeaderCard(formattedDate),
             ),
+
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Text("todays summary: ${globals.summary}",
-                  textAlign: TextAlign.center),
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: <Widget>[
+                      Text(globals.summary[1].toString()),
+                      Text(globals.summary[2].toString()),
+                    ],
+                  ),
+                ),
+              ),
             ),
+
             FlatButton(
-              padding: EdgeInsets.only(top: 80),
+              padding: EdgeInsets.all(30),
               onPressed: () {
                 setState(() {
                   _syncify("ipswich");
@@ -57,9 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: Text("Ipswich"),
             ),
-            Text('27' + '\u00B0'),
+            // Text('27' + '\u00B0'), THIS IS THE UNICODE FOR DEGREEES
             FlatButton(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(30),
               child: Text("Cairns"),
               onPressed: () {
                 setState(() {
@@ -75,17 +89,19 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 _syncify(location) {
-  hi(location).then((data) {
-    globals.summary = data;
-    print("Globals.sum");
-    print(globals.summary);
-  });
-  if (globals.summary == null) {
-    globals.summary = "No data found";
-  }
+  // hi(location).then((data) {
+  //   globals.summary = data;
+  //   print("Globals.sum");
+  //   print(globals.summary);
+  // });
+  // TRYING TO SET GLOBALS BACK IN READWRITE THEN ACCESS IT HERE.
+
+  hi(location);
+  print("GLOBALSDATA IS HERE" + globals.summary.toString());
 }
 
-Future<String> hi(location) async {
+hi(location) async {
   writeData(location);
-  return await readData();
+  readData();
+  // return await readData();
 }
