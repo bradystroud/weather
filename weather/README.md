@@ -1,6 +1,6 @@
 # weather
 
-A flutter weather app that uses a web scraper to "borrow?" the data becuase weather API's cost money apparently. 
+A flutter weather app that crawls BOM's website for data
 
 ## Initial commit details
 
